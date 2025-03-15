@@ -30,20 +30,28 @@ class ApiService {
     }
   }
 
-  Future<Response> post(String path, dynamic data) async {
+  Future<Response> post(String path, dynamic data, {bool isFormData = false}) async {
     try {
-      final response = await dio.post(path, data: data);
-      logger.i('请求成功: ${response.data}');
-      return response;
-    } on DioException catch (e) {
-      logger.e('Dio 错误: ${e.message}');
-      if (e.response != null) {
-        logger.e('响应数据: ${e.response?.data}');
-        logger.e('响应状态码: ${e.response?.statusCode}');
-      } else {
-        logger.e('无响应数据');
-      }
-      rethrow;
+    final response = await dio.post(
+      path,
+      data: isFormData ? FormData.fromMap(data) : data, // 根据 isFormData 参数决定数据格式
+      options: Options(
+        contentType: isFormData
+            ? Headers.formUrlEncodedContentType // 表单格式
+            : Headers.jsonContentType, // JSON 格式
+      ),
+    );
+    logger.i('请求成功: ${response.data}');
+    return response;
+  } on DioException catch (e) {
+    logger.e('Dio 错误: ${e.message}');
+    if (e.response != null) {
+      logger.e('响应数据: ${e.response?.data}');
+      logger.e('响应状态码: ${e.response?.statusCode}');
+    } else {
+      logger.e('无响应数据');
+    }
+    rethrow;
     }
   }
 }
