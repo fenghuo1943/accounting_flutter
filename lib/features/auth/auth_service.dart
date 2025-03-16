@@ -57,7 +57,7 @@ class AuthService {
         }
       }
       return false;
-    } on DioException catch (e) {
+    } on DioException {
       _showErrorDialog(context, '登录失败', '用户名或密码错误');
       return false;
     }
