@@ -13,9 +13,12 @@ class ApiService {
 
   ApiService(this.dio);
 
-  Future<Response> get(String path) async {
+  Future<Response> get(String path, {Options? options}) async {
     try {
-      final response = await dio.get(path);
+      final response = await dio.get(
+      path,
+      options: options, // 支持自定义请求头
+    );
       logger.i('请求成功: ${response.data}');
       return response;
     } on DioException catch (e) {
@@ -30,16 +33,15 @@ class ApiService {
     }
   }
 
-  Future<Response> post(String path, dynamic data, {bool isFormData = false}) async {
+  Future<Response> post(String path,
+  dynamic data, {
+  Options? options, // 支持自定义请求头
+}) async {
     try {
     final response = await dio.post(
       path,
-      data: isFormData ? FormData.fromMap(data) : data, // 根据 isFormData 参数决定数据格式
-      options: Options(
-        contentType: isFormData
-            ? Headers.formUrlEncodedContentType // 表单格式
-            : Headers.jsonContentType, // JSON 格式
-      ),
+      data: data, // 直接使用传入的 data
+      options: options, // 支持自定义请求头
     );
     logger.i('请求成功: ${response.data}');
     return response;

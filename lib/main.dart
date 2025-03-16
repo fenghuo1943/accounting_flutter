@@ -13,6 +13,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      title: '记账软件',
       routerConfig: router,
       theme: ThemeData(primarySwatch: Colors.blue),
       debugShowCheckedModeBanner: false,

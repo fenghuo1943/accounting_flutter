@@ -17,7 +17,8 @@ dependencies:
   fluttertoast: ^8.2.2
   intl: ^0.20.2
   logger: ^2.0.0
-  shared_preferences: ^2.2.2
+  shared_preferences: ^2.5.2
+  shared_preferences_windows: ^2.4.1
 
 dev_dependencies:
   flutter_test:

@@ -11,7 +11,7 @@ final router = GoRouter(
       builder: (context, state) => const AuthScreen(),
     ),
     GoRoute(
-      path: '/transactions',
+      path: '/transaction',
       builder: (context, state) => const TransactionListScreen(),
     ),
     GoRoute(
