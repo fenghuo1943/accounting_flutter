@@ -4,6 +4,7 @@ import 'package:flutter/material.dart'; // 用于显示弹窗
 import 'package:dio/dio.dart';
 import 'package:accounting/core/utils/shared_preferences_service.dart';
 import 'package:go_router/go_router.dart'; // 导入 go_router
+import 'package:accounting/core/utils/storage_service.dart'; // 引入存储服务
 
 final authServiceProvider = Provider<AuthService>((ref) {
   final apiService = ref.watch(apiServiceProvider);
@@ -33,7 +34,9 @@ class AuthService {
         final accessToken = response.data['access_token'];
         if (accessToken != null) {
           // 保存 access_token
-          await SharedPreferencesService.saveAccessToken(accessToken);
+          //await SharedPreferencesService.saveAccessToken(accessToken);
+          await StorageService.saveToken(accessToken);
+          await StorageService.saveRefreshToken(response.data['refresh_token']);
           final userInfoResponse = await _apiService.get(
             '/user/me',
             options: Options(
@@ -46,7 +49,7 @@ class AuthService {
             final userInfo = userInfoResponse.data;
 
             // 保存用户信息
-            await SharedPreferencesService.saveUserId(userInfo['id']);
+            await StorageService.saveUserId(userInfo['id']);
             await SharedPreferencesService.saveUsername(userInfo['username']);
             await SharedPreferencesService.saveEmail(userInfo['email']);
             // 跳转至账单界面
